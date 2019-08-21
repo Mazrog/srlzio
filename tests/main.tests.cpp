@@ -61,5 +61,20 @@ TEST_CASE("XML Tests") {
             CHECK_EQ(nested.children.names[0], "Child1");
             CHECK_EQ(std::get<0>(nested.children.values).value, 6.66);
         }
+
+        SUBCASE("single child and attributes") {
+            XMLElement * parent = root->FirstChildElement("Node2");
+            Nested2 nested;
+
+            parse(parent, nested);
+            CHECK_EQ(nested.children.names[0], "Child1");
+            CHECK_EQ(std::get<0>(nested.children.values).value, 6.66);
+
+            CHECK_EQ(nested.attributes.names[0], "id");
+            CHECK_EQ(std::get<0>(nested.attributes.values), 42);
+
+            CHECK_EQ(std::get<0>(nested.children.values).attributes.names[0], "stiven");
+            CHECK_EQ(std::get<0>(std::get<0>(nested.children.values).attributes.values), "best");
+        }
     }
 }

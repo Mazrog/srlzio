@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DataFile>
+    <Test1>3.141592</Test1>
+
+    <Test2 id="42">6.28456</Test2>
+
+    <Test3 stiven="1" max="17" file="/home/kappa">42</Test3>
+
+    <Node1>
+        <Child1>6.66</Child1>
+    </Node1>
+
+    <Node2 id="42">
+        <Child1 stiven="best">6.66</Child1>
+    </Node2>
+
+    <Node3 id="44">
+        <Child1 stiven="best">6.66</Child1>
+        <Child2 max="mazrog" age="23">17.69</Child2>
+    </Node3>
+</DataFile>

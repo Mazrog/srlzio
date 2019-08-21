@@ -1,67 +1,28 @@
 #include <iostream>
 #include "../srlzio/srlzio.hpp"
-#include "../tests/models.hpp"
-
-template < typename ... Args >
-void pretty(Args && ...) {
-    puts(__PRETTY_FUNCTION__);
-}
-
-/* --------------------------------------------------------------------------------------- */
+#include "models.hpp"
 
 /* --------------------------------------------------------------------------------------- */
 int main() {
     using namespace tinyxml2;
     XMLDocument doc;
-    doc.LoadFile("data/data.xml");
+    doc.LoadFile("data/recipe.xml");
     XMLElement * root = doc.FirstChildElement("DataFile");
 
-    XMLElement * test = root->FirstChildElement("Test1"),
-        * test2 = root->FirstChildElement("Test2"),
-        * test3 = root->FirstChildElement("Test3");
+    XMLElement * models_node = root->FirstChildElement("Models");
 
-    Leaf1 t;
-    parse(test, t);
-    std::cout << "Test  ------- " << t.value << '\n';
+    Models models;
+    parse(models_node, models);
 
-    Leaf2 t2;
-    parse(test2, t2);
-    std::cout << "Test2 ------- " << t2.value << " - And attribute id " << std::get<0>(t2.attributes.values) << '\n';
+    for (ModelBuffer const& model_buffer : std::get<0>(models.children.values).items) {
+        std::cout << "ModelBuffer: [ID=" << std::get<0>(model_buffer.attributes.values) << "]\n";
 
-    Leaf3 t3;
-    parse(test3, t3);
-    std::cout << "Test3 ------- " << t3.value << " - And attributes: "
-        << "stiven -> " << std::get<0>(t3.attributes.values)
-        << " ## max -> " << std::get<1>(t3.attributes.values)
-        << " ## file -> " << std::get<2>(t3.attributes.values) << '\n';
-
-    puts("-----------------------------\nNested examples");
-
-    XMLElement * node1 = root->FirstChildElement("Node1"),
-        * node2 = root->FirstChildElement("Node2"),
-        * node3 = root->FirstChildElement("Node3");
-
-    Nested1 n1;
-    parse(node1, n1);
-    std::cout << "Test  ------- " << std::get<0>(n1.children.values).value << '\n';
-
-    Nested2 n2;
-    parse(node2, n2);
-    std::cout << "Test  ------- \nid -> " << std::get<0>(n2.attributes.values)
-              << " and children: \n" << std::get<0>(n2.children.values).value << " with attribute "
-              << std::get<0>(n2.children.values).attributes.names[0] << " -> " <<
-              std::get<0>(std::get<0>(n2.children.values).attributes.values) << '\n';
-
-    TestNested1 n3;
-    parse(node3, n3);
-    std::cout << "Test  ------- \nid -> " << std::get<0>(n3.attributes.values) << " and children: \n"
-              << std::get<0>(n3.children.values).value << " with attribute "
-              << std::get<0>(n3.children.values).attributes.names[0] << " -> " <<
-              std::get<0>(std::get<0>(n3.children.values).attributes.values) << '\n'
-
-              << std::get<1>(n3.children.values).value << " with attributes "
-              << std::get<1>(n3.children.values).attributes.names[0] << " -> " << std::get<0>(std::get<1>(n3.children.values).attributes.values) << " ## "
-              << std::get<1>(n3.children.values).attributes.names[1] << " -> " << std::get<1>(std::get<1>(n3.children.values).attributes.values) << '\n';
+        for (Model const& model : std::get<0>(model_buffer.children.values).items) {
+            std::cout << "\tModel [ID=" << std::get<0>(model.attributes.values) << "] ## "
+                << model.children.names[0] << " -> " << std::get<0>(model.children.values).value << "\n";
+        }
+        std::cout << '\n';
+    }
 
     return 0;
 }

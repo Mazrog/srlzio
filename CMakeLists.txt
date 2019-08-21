@@ -5,7 +5,12 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_compile_options(-Wall -Wextra -pedantic)
 
-add_executable(${PROJECT_NAME} srlzio/srlzio.hpp sample/main.cpp)
+add_executable(${PROJECT_NAME}
+        srlzio/srlzio.hpp
+
+        sample/models.hpp
+        sample/main.cpp
+)
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyxml2)
 
 add_executable(${PROJECT_NAME}_tests

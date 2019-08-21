@@ -8,6 +8,7 @@
 #include <array>
 #include <tuple>
 #include <string>
+#include <vector>
 
 #include <tinyxml2.h>
 
@@ -32,6 +33,10 @@ namespace xml {
         dict<Attrs...> attributes;
     };
 
+    template < typename Item >
+    struct collection {
+        std::vector<Item>   items;
+    };
 
     template < typename ... Attrs >
     using attributes = dict<Attrs...>;
@@ -54,7 +59,8 @@ void read<double>(tinyxml2::XMLElement * elem, double * d) { elem->QueryDoubleTe
 template < >
 void read<int>(tinyxml2::XMLElement * elem, int * i) { elem->QueryIntText(i); }
 
-
+template < >
+void read<std::string>(tinyxml2::XMLElement * elem, std::string * str) { *str = elem->GetText(); }
 
 /* --------------------------------------------------------------------------------------- */
 template < typename T >
@@ -79,6 +85,8 @@ void parse(tinyxml2::XMLElement * , xml::leaf<T, xml::attributes<Attrs...>> &);
 template < typename ... Attrs, typename ... Children >
 void parse(tinyxml2::XMLElement * , xml::node<xml::attributes<Attrs...>, Children...> &);
 
+template < typename Item >
+void parse(tinyxml2::XMLElement * , xml::collection<Item> & );
 
 /* --------------------------------------------------------------------------------------- */
 template < typename ... Attrs, std::size_t ... I >
@@ -116,6 +124,17 @@ void parse(tinyxml2::XMLElement * elem, xml::node<xml::attributes<Attrs...>, Chi
     }
 
     read_children(elem, node.children, std::make_index_sequence<sizeof...(Children)>{});
+}
+
+template < typename Item >
+void parse(tinyxml2::XMLElement * elem, xml::collection<Item> & collection) {
+    while (elem) {
+        Item i;
+        parse(elem, i);
+        collection.items.push_back(std::move(i));
+
+        elem = elem->NextSiblingElement(elem->Name());
+    }
 }
 
 #endif //SRLZIO_SRLZIO_HPP

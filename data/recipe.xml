@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DataFile>
+    <Models>
+        <ModelBuffer id="0">
+            <Model id="0">
+                <File>/kappa/foo</File>
+            </Model>
+            <Model id="1">
+                <File>/kappa/bar</File>
+            </Model>
+        </ModelBuffer>
+        <ModelBuffer id="1">
+            <Model id="0">
+                <File>/plop/foo</File>
+            </Model>
+            <Model id="1">
+                <File>/plop/bar</File>
+            </Model>
+        </ModelBuffer>
+    </Models>
+</DataFile>

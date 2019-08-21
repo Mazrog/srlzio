@@ -54,3 +54,13 @@ struct TestNested1 : xml::node<xml::attributes<int>,
         std::get<0>(children.values).attributes.names = { "stiven" };
     }
 };
+
+struct Item1 : xml::leaf<int, xml::attributes<int>> {
+    Item1() { attributes.names = { "id" }; }
+};
+
+struct Collection1 : xml::node<xml::attributes<>, xml::collection<Item1>> {
+    Collection1() {
+        children.names = { "Item" };
+    }
+};

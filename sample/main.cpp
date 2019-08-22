@@ -14,12 +14,12 @@ int main() {
     Models models;
     parse(models_node, models);
 
-    for (ModelBuffer const& model_buffer : std::get<0>(models.children.values).items) {
-        std::cout << "ModelBuffer: [ID=" << std::get<0>(model_buffer.attributes.values) << "]\n";
+    for (ModelBuffer const& model_buffer : models.children.get<0>().items) {
+        std::cout << "ModelBuffer: [ID=" << model_buffer.attributes.get<0>() << "]\n";
 
-        for (Model const& model : std::get<0>(model_buffer.children.values).items) {
-            std::cout << "\tModel [ID=" << std::get<0>(model.attributes.values) << "] ## "
-                << model.children.names[0] << " -> " << std::get<0>(model.children.values).value << "\n";
+        for (Model const& model : model_buffer.children.get<0>().items) {
+            std::cout << "\tModel [ID=" << model.attributes.get<0>() << "] ## "
+                << model.children.names[0] << " -> " << model.children.get<0>().value << "\n";
         }
         std::cout << '\n';
     }

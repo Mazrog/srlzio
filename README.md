@@ -89,12 +89,12 @@ int main() {
   parse(root, infos);
 
   /* display loop */
-  std::cout << "Office's name: " << std::get<0>(std::get<0>(infos.children.values).children.values).value << '\n';
+  std::cout << "Office's name: " << infos.children.get<0>().children.get<0>().value << '\n';
   // here the first child of infos is the Office object, which has its name as first child too
 
-  for (Employee const& employee : std::get<0>(std::get<1>(infos.children.values).children.values).items) {
-    std::cout << "Employee [ID=" << std::get<0>(employee.attributes.values) << "] - Gender: " << std::get<1>(employee.attributes.values) << '\n';
-    std::cout << std::get<0>(employee.children.values).value << ", " << std::get<1>(employee.children.values).value << "years old\n\n";
+  for (Employee const& employee : infos.children.get<1>().children.get<0>().items) {
+    std::cout << "Employee [ID=" << employee.attributes.get<0>() << "] - Gender: " << employee.attributes.get<1>() << '\n';
+    std::cout << employee.children.get<0>().value << ", " << employee.children.get<1>().value << "years old\n\n";
   }
 
   return 0;

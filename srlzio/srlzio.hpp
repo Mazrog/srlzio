@@ -17,6 +17,12 @@ namespace xml {
     struct dict {
         std::tuple<Ts...> values;
         std::array<std::string, sizeof...(Ts)>   names;
+
+        template < std::size_t I >
+        auto & get() { return std::get<I>(values); }
+
+        template < std::size_t I >
+        auto const & get() const { return std::get<I>(values); }
     };
 
     template < bool is_node, typename ... > struct tag;
@@ -46,6 +52,7 @@ namespace xml {
 
     template < typename ... Ts >
     using node = tag<true, Ts...>;
+
 }
 
 /* --------------------------------------------------------------------------------------- */
